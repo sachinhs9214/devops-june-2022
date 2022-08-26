@@ -16,7 +16,7 @@ sh "mvn clean package"
 stage ('docker-image') {
 steps {
 script {
-sh 'docker build -t sachinhs9214/my_ubuntu:java /Dpcker/app/maven/Dockerfile'
+sh 'docker build -t sachinhs9214/my_ubuntu:java Docker/app/maven/Dockerfile'
 }
 
 }
