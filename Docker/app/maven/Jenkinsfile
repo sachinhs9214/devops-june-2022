@@ -23,7 +23,7 @@ stage ('Build-Deploy') {
 steps {
 script {
 sh '''
-docker build -t sachinhs9214/my_ubuntu:maven Docker/app/maven/Dockerfile
+docker build -t sachinhs9214/my_ubuntu:maven /home/ubuntu/workspace/TestPipelineJob/Docker/app/maven/Dockerfile
 docker run -it --rm -d -p 8080:8080 --name calc sachinhs9214/my_ubuntu:maven
 '''
 }
