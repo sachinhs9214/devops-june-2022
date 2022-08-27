@@ -21,7 +21,7 @@ steps {
 script {
 sh '''
 docker build -t sachinhs9214/my_ubuntu:maven /home/ubuntu/devops-june-2022/Docker/app/maven/
-docker run -it --rm -d -p 8080:8080 --name calc sachinhs9214/my_ubuntu:maven
+docker run -it --rm -d -p 8080:8080 --name Calc sachinhs9214/my_ubuntu:maven
 '''
 }
 
@@ -30,7 +30,7 @@ docker run -it --rm -d -p 8080:8080 --name calc sachinhs9214/my_ubuntu:maven
 
 }
 
-stage ('push-docker-image') {
+stage ('Push-DockerImage') {
  agent {
                 label "Docker-slave"
             }
