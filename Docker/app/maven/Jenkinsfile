@@ -1,22 +1,31 @@
 pipeline {
-agent any
+agent none 
 tools {
 maven 'MAVEN'
 }
 stages {
-stage ('BUILD') {
+stage ('Git-Clone') {
+ agent {
+                label "master"
+            }
 steps {
-checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: '3b78e4e7-2dc6-47bc-b45b-908c3b7cf3d2', url: 'https://github.com/sachinhs9214/jenkins-docker-pipeline.git']]])
-sh "mvn clean package"
-}
-
+checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: '1c71be00-fe12-405e-9f8c-a532f4b2affd', url: 'https://github.com/sachinhs9214/devops-june-2022.git']]])
 
 }
 
-stage ('docker-image') {
+
+}
+
+stage ('Build-Deploy') {
+ agent {
+                label "Docker-slave"
+            }
 steps {
 script {
-sh 'docker build -t sachinhs9214/my_ubuntu:java Docker/app/maven/Dockerfile'
+sh '''
+docker build -t sachinhs9214/my_ubuntu:maven Docker/app/maven/Dockerfile
+docker run -it --rm -d -p 8080:8080 --name calc sachinhs9214/my_ubuntu:maven
+'''
 }
 
 }
@@ -25,16 +34,20 @@ sh 'docker build -t sachinhs9214/my_ubuntu:java Docker/app/maven/Dockerfile'
 }
 
 stage ('push-docker-image') {
+ agent {
+                label "Docker-slave"
+            }
 steps {
 script {
-withCredentials([string(credentialsId: 'sachinhs9214@gmail.com', variable: 'dockerhubpwd')]) {
-sh 'docker login -u sachinhs9214 -p ${dockerhubpwd}'   
+withCredentials([string(credentialsId: 'dockerhubpwd', variable: 'dockerhubpwd')]) {
+sh 'docker login -u sachinhs9214 -p ${dockerhubpwd}'
 }
-sh 'docker push sachinhs9214/my_ubuntu:java'
 
+sh 'docker push sachinhs9214/my_ubuntu:maven'
 }
 }
 }
+
 
 
 }
