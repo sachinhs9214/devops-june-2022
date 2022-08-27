@@ -10,7 +10,7 @@ stage ('Git-Clone') {
             }
 steps {
 checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: '1c71be00-fe12-405e-9f8c-a532f4b2affd', url: 'https://github.com/sachinhs9214/devops-june-2022.git']]])
-
+sh 'pwd'
 }
 
 
