@@ -1,4 +1,4 @@
-FROM maven AS BUILD
+FROM MAVEN AS BUILD
 WORKDIR /maven
 COPY . /maven
 COPY ./libraries /root/.m2
